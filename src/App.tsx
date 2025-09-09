@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import GeneralSettings from './components/sections/GeneralSettings';
 import AdvancedSettings from './components/sections/AdvancedSettings';
-import ChatSettings from './components/sections/ChatSettings';
+import EnhancedChatSettings from './components/sections/EnhancedChatSettings';
+import MCPServerSettings from './components/sections/MCPServerSettings';
+import QuestModeSettings from './components/sections/QuestModeSettings';
 import PlaceholderSettings from './components/sections/PlaceholderSettings';
 import UserMenu from './components/UserMenu';
 import { X } from 'lucide-react';
@@ -24,8 +26,13 @@ function App() {
   const [proxySettings, setProxySettings] = useState('manual');
   const [proxyUrl, setProxyUrl] = useState('');
   const [autoUpdates, setAutoUpdates] = useState(true);
-  const [enableChatHistory, setEnableChatHistory] = useState(true);
-  const [enableContextSuggestions, setEnableContextSuggestions] = useState(false);
+  const [questModeEnabled, setQuestModeEnabled] = useState(true);
+  const [searchToolsEnabled, setSearchToolsEnabled] = useState(true);
+  const [mcpToolsEnabled, setMcpToolsEnabled] = useState(true);
+  const [toolbarOnSelectionEnabled, setToolbarOnSelectionEnabled] = useState(true);
+  const [terminalMode, setTerminalMode] = useState('auto-run');
+  const [webToolsMode, setWebToolsMode] = useState('auto-execute');
+  const [terminalCommands, setTerminalCommands] = useState('rm,mv,sudo,wget,curl,chown');
 
   const renderSettingsContent = () => {
     switch (activeSection) {
@@ -51,11 +58,19 @@ function App() {
         );
       case 'chat':
         return (
-          <ChatSettings
-            enableChatHistory={enableChatHistory}
-            enableContextSuggestions={enableContextSuggestions}
-            onEnableChatHistoryChange={setEnableChatHistory}
-            onEnableContextSuggestionsChange={setEnableContextSuggestions}
+          <EnhancedChatSettings
+            searchToolsEnabled={searchToolsEnabled}
+            mcpToolsEnabled={mcpToolsEnabled}
+            toolbarOnSelectionEnabled={toolbarOnSelectionEnabled}
+            terminalMode={terminalMode}
+            webToolsMode={webToolsMode}
+            terminalCommands={terminalCommands}
+            onSearchToolsEnabledChange={setSearchToolsEnabled}
+            onMcpToolsEnabledChange={setMcpToolsEnabled}
+            onToolbarOnSelectionEnabledChange={setToolbarOnSelectionEnabled}
+            onTerminalModeChange={setTerminalMode}
+            onWebToolsModeChange={setWebToolsMode}
+            onTerminalCommandsChange={setTerminalCommands}
           />
         );
       case 'completion':
@@ -67,18 +82,13 @@ function App() {
         );
       case 'quest-mode':
         return (
-          <PlaceholderSettings
-            title="Quest Mode"
-            description="Set up quest mode preferences and customize your interactive coding experience."
+          <QuestModeSettings
+            questModeEnabled={questModeEnabled}
+            onQuestModeEnabledChange={setQuestModeEnabled}
           />
         );
       case 'mcp-server':
-        return (
-          <PlaceholderSettings
-            title="MCP Server"
-            description="Configure Model Context Protocol server settings and connection preferences."
-          />
-        );
+        return <MCPServerSettings />;
       case 'rules':
         return (
           <PlaceholderSettings
